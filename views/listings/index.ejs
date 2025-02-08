@@ -1,0 +1,104 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+    /* Filters Section */
+    #filters {
+        display: flex;
+        gap: 15px;
+        padding: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .filter {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 15px;
+        cursor: pointer;
+        border-radius: 8px;
+        background-color: #f1f1f1;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+        width: 110px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .filter i {
+        font-size: 20px;
+        margin-bottom: 5px;
+        color: #ff385c;
+    }
+
+    .filter:hover {
+        background-color: #ff385c;
+        color: white;
+        transform: scale(1.05);
+    }
+
+    .filter:hover i {
+        color: white;
+    }
+</style>
+
+
+<body>
+    <div class="container">
+
+        <!-- Filters Section -->
+        <div id="filters">
+            <div class="filter">
+                <i class="fas fa-fire"></i>
+                <p>Trending</p>
+            </div>
+            <div class="filter">
+                <i class="fas fa-wallet"></i>
+                <p>Budget-Friendly</p>
+            </div>
+            <div class="filter">
+                <i class="fas fa-home"></i>
+                <p>Family-Friendly</p>
+            </div>
+            <div class="filter">
+                <i class="fas fa-paw"></i>
+                <p>Pet-Friendly</p>
+            </div>
+            <div class="filter">
+                <i class="fas fa-gem"></i>
+                <p>Luxury</p>
+            </div>
+            <div class="filter">
+                <i class="fas fa-umbrella-beach"></i>
+                <p>Near Beach</p>
+            </div>
+            <div class="filter">
+                <i class="fas fa-laptop-house"></i>
+                <p>Workspaces</p>
+            </div>
+            <div class="filter">
+                <i class="fas fa-tree"></i>
+                <p>Unique Stays</p>
+            </div>
+        </div>
+
+        <!-- Listings Section -->
+        <div class="card-container">
+            <% for(listing of allListings) { %>
+                <div class="card">
+                    <img src="<%= listing.image.url %>" alt="<%= listing.title %>">
+                    <div class="card-content">
+                        <h3><a href="/listings/<%= listing._id %>"><%= listing.title %></a></h3>
+                        <p class="description"><%= listing.description %>...</p>
+                        <p class="price">$<%= listing.price %></p>
+                        <p class="location"><%= listing.location %>, <%= listing.country %></p>
+                        <a href="/listings/<%= listing._id %>" class="view-btn">View Details</a>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+
+    </div>
+</body>

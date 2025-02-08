@@ -1,0 +1,83 @@
+<% layout("/layouts/boilerplate") %>
+
+<body>
+    <div class="container">
+        <div class="listing-card">
+            <h2>Listing Details</h2>
+            <p class="listing-id">Listing ID: <%= listingData._id %></p>
+
+            <img src="<%= listingData.image.url %>" alt="<%= listingData.title %>" class="listing-image">
+
+            <div class="listing-info">
+                <i class="listing-location"> Owned by <%= listingData.owner.username %></5></p>
+                <h3 class="listing-title"><%= listingData.title %></h3>
+                <p class="listing-description"><%= listingData.description %></p>
+                <p class="listing-price">Price: ₹<%= listingData.price.toLocaleString("en-IN") %></p>
+                <p class="listing-location">Location: <%= listingData.location %>, <%= listingData.country %></p>
+            </div>
+            
+            <% if(currUser && currUser._id.equals(listingData.owner._id)){ %>
+            <div class="buttons">
+                <form method="GET" action="/listings/<%= listingData._id %>/edit">
+                    <button class="edit-btn">Edit Listing</button>
+                </form>
+
+                <form method="POST" action="/listings/<%= listingData._id %>?_method=DELETE">
+                    <button class="delete-btn">Delete Listing</button>
+                </form>
+            </div>
+            <% } %>
+            <hr>
+            <!-- Review form -->
+             <% if(currUser) { %>
+             <div>
+                <form action="/listings/<%= listingData._id %>/review" method="POST">
+                    <h4>Leave a Review</h4>
+
+                    <fieldset class="starability-slot">
+                        <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+                        <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                        <label for="first-rate1" title="Terrible">1 star</label>
+                        <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                        <label for="first-rate2" title="Not good">2 stars</label>
+                        <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                        <label for="first-rate3" title="Average">3 stars</label>
+                        <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                        <label for="first-rate4" title="Very good">4 stars</label>
+                        <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                        <label for="first-rate5" title="Amazing">5 stars</label>
+                      </fieldset>
+                    <div>
+                        <label for="comment"></label>
+                        <textarea name="review[comment]" id="comment" placeholder="Comment" required></textarea>
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+             </div>
+             <% } %>
+
+             <!-- All reviews -->
+             <h4>All Reviews</h4>
+             <div class="row">
+               <% for(everyReview of listingData.reviews) { %>
+                 <div class="col-md-6 mb-3">
+                   <div class="card">
+                     <div class="card-body">
+                        <p>Review by : @<%= everyReview.author.username %> </p>
+                       <h6 class="card-title"><%= everyReview.comment %></h6>
+                       <!-- <p class="card-subtitle mb-2 text-muted"><%= everyReview.rating %> stars</p> -->
+                       <p class="starability-result" data-rating="<%= everyReview.rating %>">
+                      </p>
+                       <form method="POST" action="/listings/<%= listingData._id %>/review/<%= everyReview._id %>?_method=DELETE" class="mt-3">
+                        <button>Delete</button>
+                       </form>
+                     </div>
+                   </div>
+                 </div>
+               <% } %>
+             </div>
+             
+             
+        </div>
+    </div>
+</body>
